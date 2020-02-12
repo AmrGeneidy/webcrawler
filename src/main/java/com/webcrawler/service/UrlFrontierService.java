@@ -1,6 +1,6 @@
-package com.webcrawler;
+package com.webcrawler.service;
 
-public interface UrlFrontier {
+public interface UrlFrontierService {
     void enqueue(String url);
     String dequeue();
     boolean isEmpty();

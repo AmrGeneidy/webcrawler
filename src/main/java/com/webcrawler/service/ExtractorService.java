@@ -1,7 +1,7 @@
-package com.webcrawler;
+package com.webcrawler.service;
 
 import java.util.List;
 
-public interface Extractor {
+public interface ExtractorService {
     List<String> extractUrls(String htmlContent);
 }

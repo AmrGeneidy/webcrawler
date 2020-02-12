@@ -1,7 +1,7 @@
-package com.webcrawler;
+package com.webcrawler.service;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface UrlFetcher {
+public interface UrlFetcherService {
     CompletableFuture<String> fetch(String url);
 }

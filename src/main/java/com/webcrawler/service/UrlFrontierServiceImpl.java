@@ -1,11 +1,11 @@
-package com.webcrawler;
+package com.webcrawler.service;
 
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component
-public class UrlFrontierImpl implements UrlFrontier {
+public class UrlFrontierServiceImpl implements UrlFrontierService {
     ConcurrentLinkedQueue<String> queue = new ConcurrentLinkedQueue<>();
 
     @Override

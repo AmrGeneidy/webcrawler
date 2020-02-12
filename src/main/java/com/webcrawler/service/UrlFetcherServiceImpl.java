@@ -1,4 +1,4 @@
-package com.webcrawler;
+package com.webcrawler.service;
 
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-public class UrlFetcherImpl implements UrlFetcher{
+public class UrlFetcherServiceImpl implements UrlFetcherService {
     @Override
     public CompletableFuture<String> fetch(String url) {
         HttpClient client = HttpClient.newHttpClient();

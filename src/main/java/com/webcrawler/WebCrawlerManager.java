@@ -1,5 +1,9 @@
 package com.webcrawler;
 
+import com.webcrawler.service.ExtractorService;
+import com.webcrawler.service.UrlDedupService;
+import com.webcrawler.service.UrlFetcherService;
+import com.webcrawler.service.UrlFrontierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,24 +12,24 @@ import java.util.stream.Collectors;
 @Component
 public class WebCrawlerManager {
     @Autowired
-    private Extractor extractor;
+    private ExtractorService extractorService;
     @Autowired
-    private UrlDedup urlDedup;
+    private UrlDedupService urlDedupService;
     @Autowired
-    private UrlFrontier urlFrontier;
+    private UrlFrontierService urlFrontierService;
     @Autowired
-    private UrlFetcher urlFetcher;
+    private UrlFetcherService urlFetcherService;
 
     public void crawl(String url) {
-        urlFrontier.enqueue(url);
-        while (!urlFrontier.isEmpty()) {
-            String currUrl = urlFrontier.dequeue();
+        urlFrontierService.enqueue(url);
+        while (!urlFrontierService.isEmpty()) {
+            String currUrl = urlFrontierService.dequeue();
             System.out.println("fetching : " + currUrl);
-            urlFetcher.fetch(currUrl)
-                    .thenApply(extractor::extractUrls)
+            urlFetcherService.fetch(currUrl)
+                    .thenApply(extractorService::extractUrls)
                     .thenApply(links -> links.stream()
-                            .filter(link -> link.startsWith(url) && !urlDedup.isDuplicate(link))
-                            .peek(link -> urlFrontier.enqueue(link.trim()))
+                            .filter(link -> link.startsWith(url) && !urlDedupService.isDuplicate(link))
+                            .peek(link -> urlFrontierService.enqueue(link.trim()))
                             .collect(Collectors.toList()))
                     .join();
         }

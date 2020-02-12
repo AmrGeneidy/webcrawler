@@ -1,4 +1,4 @@
-package com.webcrawler;
+package com.webcrawler.service;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import static java.util.function.Predicate.not;
 
 @Component
-public class ExtractorImpl implements Extractor {
+public class ExtractorServiceImpl implements ExtractorService {
     @Override
     public List<String> extractUrls(String htmlContent) {
         Elements elements = Jsoup.parse(htmlContent).select("a[href]");
