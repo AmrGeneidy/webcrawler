@@ -1,11 +1,11 @@
 package com.webcrawler.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+@Service
 public class UrlDedupServiceImpl implements UrlDedupService {
     Set<String> set = ConcurrentHashMap.newKeySet();
 

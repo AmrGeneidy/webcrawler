@@ -1,7 +1,10 @@
 package com.webcrawler.service;
 
 import com.webcrawler.model.Page;
+import org.springframework.kafka.support.SendResult;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface PageSenderService {
-    void sendPage(Page page);
+    CompletableFuture<SendResult<String, Page>> sendPage(Page page);
 }

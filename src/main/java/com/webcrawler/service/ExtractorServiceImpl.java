@@ -2,14 +2,14 @@ package com.webcrawler.service;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.function.Predicate.not;
 
-@Component
+@Service
 public class ExtractorServiceImpl implements ExtractorService {
     @Override
     public List<String> extractUrls(String htmlContent) {
