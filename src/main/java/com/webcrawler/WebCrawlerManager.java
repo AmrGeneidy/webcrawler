@@ -1,9 +1,7 @@
 package com.webcrawler;
 
-import com.webcrawler.service.ExtractorService;
-import com.webcrawler.service.UrlDedupService;
-import com.webcrawler.service.UrlFetcherService;
-import com.webcrawler.service.UrlFrontierService;
+import com.webcrawler.model.Page;
+import com.webcrawler.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +17,15 @@ public class WebCrawlerManager {
     private UrlFrontierService urlFrontierService;
     @Autowired
     private UrlFetcherService urlFetcherService;
+    @Autowired
+    private PageSenderService pageSenderService;
 
     public void crawl(String url) {
         urlFrontierService.enqueue(url);
         while (!urlFrontierService.isEmpty()) {
             String currUrl = urlFrontierService.dequeue();
             System.out.println("fetching : " + currUrl);
+            pageSenderService.sendPage(new Page(currUrl, ""));
             urlFetcherService.fetch(currUrl)
                     .thenApply(extractorService::extractUrls)
                     .thenApply(links -> links.stream()
