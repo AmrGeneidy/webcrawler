@@ -19,6 +19,8 @@ public class WebCrawlerManager {
     private UrlFetcherService urlFetcherService;
     @Autowired
     private PageSenderService pageSenderService;
+    @Autowired
+    private PersistenceManagementService persistenceManagementService;
 
     public void crawl(String url) {
         urlFrontierService.enqueue(url);
@@ -26,6 +28,7 @@ public class WebCrawlerManager {
             String currUrl = urlFrontierService.dequeue();
             System.out.println("fetching : " + currUrl);
             pageSenderService.sendPage(new Page(currUrl, ""));
+            persistenceManagementService.save(new Page(currUrl, ""));
             urlFetcherService.fetch(currUrl)
                     .thenApply(extractorService::extractUrls)
                     .thenApply(links -> links.stream()

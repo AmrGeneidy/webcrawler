@@ -29,10 +29,6 @@ public class PageRepositoryImpl implements PageRepository {
                 .withAttributeName("url")
                 .withAttributeType("S"));
 
-        attributeDefinitions.add(new AttributeDefinition()
-                .withAttributeName("body")
-                .withAttributeType("S"));
-
         ArrayList<KeySchemaElement> tableKeySchema = new ArrayList<>();
         tableKeySchema.add(new KeySchemaElement()
                 .withAttributeName("url")
