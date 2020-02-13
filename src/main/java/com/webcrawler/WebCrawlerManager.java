@@ -27,10 +27,10 @@ public class WebCrawlerManager {
         while (!urlFrontierService.isEmpty()) {
             String currUrl = urlFrontierService.dequeue();
             System.out.println("fetching : " + currUrl);
-            pageSenderService.sendPage(new Page(currUrl, ""));
-            persistenceManagementService.save(new Page(currUrl, ""));
-            urlFetcherService.fetch(currUrl)
-                    .thenApply(extractorService::extractUrls)
+            pageSenderService.sendPage(new Page(currUrl, "random"));
+            persistenceManagementService.save(new Page(currUrl, "random")).join();
+            System.out.println(persistenceManagementService.getBody(currUrl).join());
+            urlFetcherService.fetch(currUrl).thenApply(extractorService::extractUrls)
                     .thenApply(links -> links.stream()
                             .filter(link -> link.startsWith(url) && !urlDedupService.isDuplicate(link))
                             .peek(link -> urlFrontierService.enqueue(link.trim()))

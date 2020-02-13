@@ -2,8 +2,10 @@ package com.webcrawler.repository;
 
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.webcrawler.model.Page;
-import com.webcrawler.util.CompletablePromise;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface PageRepository {
-    CompletablePromise<PutItemResult> savePage(Page page);
+    CompletableFuture<PutItemResult> savePage(Page page);
+    CompletableFuture<String> getBody(String url);
 }

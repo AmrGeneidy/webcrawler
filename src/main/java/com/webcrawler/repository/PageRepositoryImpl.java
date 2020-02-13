@@ -1,7 +1,7 @@
 package com.webcrawler.repository;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.webcrawler.model.Page;
@@ -13,14 +13,48 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Repository
 public class PageRepositoryImpl implements PageRepository {
-    @Autowired
-    private DynamoDBMapper dynamoDBMapper;
+//    @Autowired
+//    private DynamoDBMapper dynamoDBMapper;
 
     @Autowired
     private AmazonDynamoDBAsync amazonDynamoDBAsync;
+
+    @PostConstruct
+    private void initializeDatabase() {
+//        dynamoDBMapper = new DynamoDBMapper(amazonDynamoDBAsync);
+        CreateTableRequest createTableRequest = buildPagesTableCreateRequest();
+        TableUtils.createTableIfNotExists(amazonDynamoDBAsync, createTableRequest);
+    }
+
+    @Override
+    public CompletablePromise<PutItemResult> savePage(Page page) {
+        PutItemRequest putItemRequest = new PutItemRequest();
+
+        Map<String, AttributeValue> item = new HashMap<>();
+        item.put("url", new AttributeValue().withS(page.getUrl()));
+        item.put("body", new AttributeValue().withS(page.getBody()));
+
+        putItemRequest.withTableName("pages");
+        putItemRequest.withItem(item);
+
+        return new CompletablePromise<>(amazonDynamoDBAsync.putItemAsync(putItemRequest));
+    }
+
+    @Override
+    public CompletableFuture<String> getBody(String url) {
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("url", new AttributeValue().withS(url));
+
+        GetItemRequest getItemRequest = new GetItemRequest();
+        getItemRequest.withTableName("pages");
+        getItemRequest.withKey(key);
+        return new CompletablePromise<>(amazonDynamoDBAsync.getItemAsync(getItemRequest))
+                .thenApply(GetItemResult::getItem).thenApply(map -> map.get("body").getS());
+    }
 
     private CreateTableRequest buildPagesTableCreateRequest() {
         ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<>();
@@ -43,24 +77,5 @@ public class PageRepositoryImpl implements PageRepository {
                 .withKeySchema(tableKeySchema);
 
         return createTableRequest;
-    }
-
-    @PostConstruct
-    private void initializeDatabase() {
-        dynamoDBMapper = new DynamoDBMapper(amazonDynamoDBAsync);
-        // TODO: implement table creation request build function
-        CreateTableRequest createTableRequest = buildPagesTableCreateRequest();
-        TableUtils.createTableIfNotExists(amazonDynamoDBAsync, createTableRequest);
-    }
-
-    @Override
-    public CompletablePromise<PutItemResult> savePage(Page page) {
-        PutItemRequest putItemRequest = new PutItemRequest();
-        Map<String, AttributeValue> item = new HashMap<>();
-        item.put("url", new AttributeValue().withS(page.getUrl()));
-        item.put("body", new AttributeValue().withS(page.getBody()));
-        putItemRequest.withTableName("pages");
-        putItemRequest.withItem(item);
-        return new CompletablePromise<>(amazonDynamoDBAsync.putItemAsync(putItemRequest));
     }
 }

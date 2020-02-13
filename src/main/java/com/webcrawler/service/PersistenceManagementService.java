@@ -2,8 +2,10 @@ package com.webcrawler.service;
 
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.webcrawler.model.Page;
-import com.webcrawler.util.CompletablePromise;
+
+import java.util.concurrent.CompletableFuture;
 
 public interface PersistenceManagementService {
-    CompletablePromise<PutItemResult> save(Page page);
+    CompletableFuture<PutItemResult> save(Page page);
+    CompletableFuture<String> getBody(String url);
 }
