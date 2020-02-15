@@ -1,7 +1,6 @@
 package com.webcrawler.repository;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
-//import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.*;
 import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.webcrawler.model.Page;
@@ -17,15 +16,12 @@ import java.util.concurrent.CompletableFuture;
 
 @Repository
 public class PageRepositoryImpl implements PageRepository {
-//    @Autowired
-//    private DynamoDBMapper dynamoDBMapper;
 
     @Autowired
     private AmazonDynamoDBAsync amazonDynamoDBAsync;
 
     @PostConstruct
     private void initializeDatabase() {
-//        dynamoDBMapper = new DynamoDBMapper(amazonDynamoDBAsync);
         CreateTableRequest createTableRequest = buildPagesTableCreateRequest();
         TableUtils.createTableIfNotExists(amazonDynamoDBAsync, createTableRequest);
     }

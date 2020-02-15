@@ -3,11 +3,10 @@ package com.webcrawler.configuration;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webcrawler.model.Page;
 import com.webcrawler.model.UrlContainer;
-import com.webcrawler.service.PageReceiver;
-import com.webcrawler.service.UrlReceiver;
+import com.webcrawler.service.events.PageReceiver;
+import com.webcrawler.service.events.UrlReceiver;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,6 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
 @EnableKafka

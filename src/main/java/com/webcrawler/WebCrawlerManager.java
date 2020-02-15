@@ -3,6 +3,9 @@ package com.webcrawler;
 import com.webcrawler.model.Page;
 import com.webcrawler.model.UrlContainer;
 import com.webcrawler.service.*;
+import com.webcrawler.service.events.PageSenderService;
+import com.webcrawler.service.events.UrlSenderService;
+import com.webcrawler.service.persistence.UrlPersistenceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +26,7 @@ public class WebCrawlerManager {
     @Autowired
     private UrlSenderService urlSenderService;
     @Autowired
-    private PersistenceManagementService persistenceManagementService;
+    private UrlPersistenceManager persistenceManagementService;
 
     public void crawl(String url) {
         urlFrontierService.enqueue(url);

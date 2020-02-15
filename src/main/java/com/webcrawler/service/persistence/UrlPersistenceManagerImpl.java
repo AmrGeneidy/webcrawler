@@ -1,4 +1,4 @@
-package com.webcrawler.service;
+package com.webcrawler.service.persistence;
 
 import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.webcrawler.model.Page;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class PersistenceManagementServiceImpl implements PersistenceManagementService {
+public class UrlPersistenceManagerImpl implements UrlPersistenceManager {
     @Autowired
     private PageRepository pageRepository;
 

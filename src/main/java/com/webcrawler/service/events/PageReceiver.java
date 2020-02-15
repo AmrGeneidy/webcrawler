@@ -1,4 +1,4 @@
-package com.webcrawler.service;
+package com.webcrawler.service.events;
 
 import com.webcrawler.model.Page;
 import org.slf4j.Logger;
