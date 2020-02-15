@@ -8,6 +8,11 @@ public class Page {
         this.body = body;
     }
 
+    // needed for kafka serialization.
+    public Page() {
+
+    }
+
     public String getUrl() {
         return url;
     }

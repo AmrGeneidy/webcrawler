@@ -7,6 +7,11 @@ public class UrlContainer {
         this.url = url;
     }
 
+    // needed for kafka serialization.
+    public UrlContainer() {
+
+    }
+
     public String getUrl() {
         return url;
     }
