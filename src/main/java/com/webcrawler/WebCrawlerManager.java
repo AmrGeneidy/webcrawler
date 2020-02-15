@@ -1,6 +1,7 @@
 package com.webcrawler;
 
 import com.webcrawler.model.Page;
+import com.webcrawler.model.UrlContainer;
 import com.webcrawler.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ public class WebCrawlerManager {
     @Autowired
     private PageSenderService pageSenderService;
     @Autowired
+    private UrlSenderService urlSenderService;
+    @Autowired
     private PersistenceManagementService persistenceManagementService;
 
     public void crawl(String url) {
@@ -34,6 +37,7 @@ public class WebCrawlerManager {
                     .thenApply(links -> links.stream()
                             .filter(link -> link.startsWith(url) && !urlDedupService.isDuplicate(link))
                             .peek(link -> urlFrontierService.enqueue(link.trim()))
+                            .peek(link -> urlSenderService.sendUrl(new UrlContainer(link)).join())
                             .collect(Collectors.toList()))
                     .join();
         }

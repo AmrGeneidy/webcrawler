@@ -2,8 +2,8 @@ package com.webcrawler.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.webcrawler.model.Page;
-import com.webcrawler.service.PageSenderService;
-import com.webcrawler.service.PageSenderServiceImpl;
+import com.webcrawler.model.UrlContainer;
+import com.webcrawler.service.*;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
@@ -21,6 +21,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Configs for {@link UrlContainer} and {@link Page} kafka producers.
+ */
 @EnableAsync
 @Configuration
 public class KafkaProducerConfig {
@@ -39,18 +42,34 @@ public class KafkaProducerConfig {
         return props;
     }
 
+    // TODO: Use beans as input instead of making a function call.
     @Bean
-    public ProducerFactory<String, Page> producerFactory(ObjectMapper objectMapper) {
+    public ProducerFactory<String, Page> pagesProducerFactory(ObjectMapper objectMapper) {
         return new DefaultKafkaProducerFactory<>(producerConfigs(), new StringSerializer(), new JsonSerializer(objectMapper));
     }
 
     @Bean
-    public KafkaTemplate<String, Page> kafkaTemplate(ObjectMapper objectMapper) {
-        return new KafkaTemplate<String, Page>(producerFactory(objectMapper));
+    public KafkaTemplate<String, Page> pagesKafkaTemplate(ObjectMapper objectMapper) {
+        return new KafkaTemplate<String, Page>(pagesProducerFactory(objectMapper));
     }
 
     @Bean
-    public PageSenderService eventSenderService() {
+    public KafkaTemplate<String, UrlContainer> urlsKafkaTemplate(ObjectMapper objectMapper) {
+        return new KafkaTemplate<String, UrlContainer>(urlsProducerFactory(objectMapper));
+    }
+
+    @Bean
+    public ProducerFactory<String, UrlContainer> urlsProducerFactory(ObjectMapper objectMapper) {
+        return new DefaultKafkaProducerFactory<>(producerConfigs(), new StringSerializer(), new JsonSerializer(objectMapper));
+    }
+
+    @Bean
+    public PageSenderService pageSenderService() {
         return new PageSenderServiceImpl();
+    }
+
+    @Bean
+    public UrlSenderService urlSenderService() {
+        return new UrlSenderServiceImpl();
     }
 }
