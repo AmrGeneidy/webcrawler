@@ -12,7 +12,6 @@ public class UrlReceiver {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(UrlReceiver.class);
 
-
     @Autowired
     UrlProcessor urlProcessor;
 

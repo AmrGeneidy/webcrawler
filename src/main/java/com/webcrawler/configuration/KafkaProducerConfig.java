@@ -9,8 +9,6 @@ import com.webcrawler.service.events.UrlSenderService;
 import com.webcrawler.service.events.UrlSenderServiceImpl;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +28,6 @@ import java.util.Map;
 @EnableAsync
 @Configuration
 public class KafkaProducerConfig {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerConfig.class);
 
     @Value("${kafka.bootstrap-servers}")
     private String bootstrapServers;
@@ -53,12 +49,12 @@ public class KafkaProducerConfig {
 
     @Bean
     public KafkaTemplate<String, Page> pagesKafkaTemplate(ObjectMapper objectMapper) {
-        return new KafkaTemplate<String, Page>(pagesProducerFactory(objectMapper));
+        return new KafkaTemplate<>(pagesProducerFactory(objectMapper));
     }
 
     @Bean
     public KafkaTemplate<String, UrlContainer> urlsKafkaTemplate(ObjectMapper objectMapper) {
-        return new KafkaTemplate<String, UrlContainer>(urlsProducerFactory(objectMapper));
+        return new KafkaTemplate<>(urlsProducerFactory(objectMapper));
     }
 
     @Bean

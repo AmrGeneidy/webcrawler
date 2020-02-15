@@ -10,7 +10,12 @@ public class UrlDedupServiceImpl implements UrlDedupService {
     Set<String> set = ConcurrentHashMap.newKeySet();
 
     @Override
-    public boolean isDuplicate(String url) {
+    public boolean visit(String url) {
         return !set.add(url);
+    }
+
+    @Override
+    public boolean isDuplicate(String url) {
+        return set.contains(url);
     }
 }

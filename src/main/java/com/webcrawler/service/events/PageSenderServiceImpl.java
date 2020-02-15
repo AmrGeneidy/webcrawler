@@ -28,11 +28,11 @@ public class PageSenderServiceImpl implements PageSenderService {
     @Async
     public CompletableFuture<SendResult<String, Page>> sendPage(Page page) {
         ListenableFuture<SendResult<String, Page>> sendPageEvent = kafkaTemplate.send(topic, page);
-        sendPageEvent.addCallback(new ListenableFutureCallback<SendResult<String, Page>>() {
+        sendPageEvent.addCallback(new ListenableFutureCallback<>() {
 
             @Override
             public void onSuccess(final SendResult<String, Page> message) {
-                LOGGER.info("sent message = " + message + " with offset= " + message.getRecordMetadata().offset());
+                LOGGER.info("sent message = " + message.getProducerRecord().value().getUrl() + " with offset= " + message.getRecordMetadata().offset());
             }
 
             @Override

@@ -23,7 +23,7 @@ public class UrlSenderServiceImpl implements UrlSenderService {
     @Override
     public CompletableFuture<SendResult<String, UrlContainer>> sendUrl(UrlContainer url) {
         ListenableFuture<SendResult<String, UrlContainer>> sendPageEvent = kafkaTemplate.send(topic, url);
-        sendPageEvent.addCallback(new ListenableFutureCallback<SendResult<String, UrlContainer>>() {
+        sendPageEvent.addCallback(new ListenableFutureCallback<>() {
 
             @Override
             public void onSuccess(final SendResult<String, UrlContainer> message) {
