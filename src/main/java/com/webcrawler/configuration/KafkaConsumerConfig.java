@@ -62,12 +62,12 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConsumerFactory<String, UrlContainer> urlConsumerFactory() {
-        return new DefaultKafkaConsumerFactory<String, UrlContainer>(consumerConfigs(), new StringDeserializer(),
+        return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
                 new JsonDeserializer<>(UrlContainer.class));
     }
 
-    @Bean(name="urlKafkaListenerContainerFactory")
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, UrlContainer>> urlKafkaListenerContainerFactory() {
+    @Bean(name="urlFrontierKafkaListenerContainerFactory")
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, UrlContainer>> urlFrontierKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, UrlContainer> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(urlConsumerFactory());

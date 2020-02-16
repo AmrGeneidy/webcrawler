@@ -4,6 +4,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+/**
+ * Converts {@link Future} to {@link CompletableFuture}.
+ */
 public class CompletablePromise<V> extends CompletableFuture<V> {
     private Future<V> future;
 

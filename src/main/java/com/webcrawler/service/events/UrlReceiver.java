@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 
+/**
+ * Pulls urls from urlFrontier and visit them by calling {@link UrlProcessor#process(String)}.
+ */
 public class UrlReceiver {
 
     private static final Logger LOGGER =
@@ -15,10 +18,10 @@ public class UrlReceiver {
     @Autowired
     UrlProcessor urlProcessor;
 
-    @KafkaListener(topics = "${kafka.urls.topic.json}",containerFactory = "urlKafkaListenerContainerFactory")
+    @KafkaListener(topics = "${kafka.urls.topic.json}",containerFactory = "urlFrontierKafkaListenerContainerFactory")
     public void receive(UrlContainer payload) {
-        LOGGER.info("received payload='{}'", payload.toString());
-        urlProcessor.process(payload.getUrl());
-        LOGGER.info("processed payload='{}'", payload.toString());
+        LOGGER.info("received url='{}'", payload.toString());
+        urlProcessor.process(payload.getUrl()).join();
+        LOGGER.info("processed url='{}'", payload.toString());
     }
 }
